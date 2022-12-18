@@ -8,12 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-// use Kreait\Firebase;
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\ServiceAccount;
-use Kreait\Laravel\Firebase\Facades\Firebase;
-use Kreait\Firebase\Contract\Auth;
-use Kreait\Firebase\Auth\UserQuery;
 
 class ContactController extends Controller
 {
