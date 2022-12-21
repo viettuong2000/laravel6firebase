@@ -8,9 +8,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use Kreait\Firebase\Factory;
 
-class ContactController extends Controller
+class SellerController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     protected $firebase;
@@ -23,40 +22,37 @@ class ContactController extends Controller
 
     public function index()
     {
-        $users = $this->database->getReference('users')->getValue();
-        if ($users == "") $users = [];
-        return view('firebase.contact.index', compact('users'));
+        $sellers = $this->database->getReference('sellers')->getValue();
+        if ($sellers == "") $sellers = [];
+        return view('firebase.seller.index', compact('sellers'));
     }
 
     public function create()
     {
-        return view('firebase.contact.create');
+        return view('firebase.seller.create');
     }
 
     public function store(Request $request)
     {
-
         $postData = [
             'fname' => $request->first_name,
             'lname' => $request->last_name,
             'phone' => $request->phone,
             'email' => $request->email,
+            'address' => $request->address,
         ];
-
-
-
-        $postRef = $this->database->getReference('users')->push($postData);
+        $postRef = $this->database->getReference('sellers')->push($postData);
         if ($postRef) {
-            return redirect('contacts')->with('status', 'Contact Added Successfully');
+            return redirect('sellers')->with('status', 'Seller Added Successfully');
         } else {
-            return redirect('contacts')->with('status', 'Contact Not Added');
+            return redirect('sellers')->with('status', 'Contact Not Added');
         }
     }
 
     public function edit($id)
     {
-        $user = $this->database->getReference('users/' . $id)->getValue();
-        return view('firebase.contact.edit', compact('user', 'id'));
+        $seller = $this->database->getReference('sellers/' . $id)->getValue();
+        return view('firebase.seller.edit', compact('seller', 'id'));
     }
 
     public function update(Request $request, $id)
@@ -66,22 +62,23 @@ class ContactController extends Controller
             'lname' => $request->lname,
             'phone' => $request->phone,
             'email' => $request->email,
+            'address' => $request->address,
         ];
-        $postRef = $this->database->getReference('users/' . $id)->set($postData);
+        $postRef = $this->database->getReference('sellers/' . $id)->update($postData);
         if ($postRef) {
-            return redirect('contacts')->with('status', 'Contact Updated Successfully');
+            return redirect('sellers')->with('status', 'Seller Updated Successfully');
         } else {
-            return redirect('contacts')->with('status', 'Contact Not Updated');
+            return redirect('sellers')->with('status', 'Seller Not Updated');
         }
     }
 
     public function destroy($id)
     {
-        $postRef = $this->database->getReference('users/' . $id)->remove();
+        $postRef = $this->database->getReference('sellers/' . $id)->remove();
         if ($postRef) {
-            return redirect('contacts')->with('status', 'Contact Deleted Successfully');
+            return redirect('sellers')->with('status', 'Seller Deleted Successfully');
         } else {
-            return redirect('contacts')->with('status', 'Contact Not Deleted');
+            return redirect('sellers')->with('status', 'Seller Not Deleted');
         }
     }
 }
